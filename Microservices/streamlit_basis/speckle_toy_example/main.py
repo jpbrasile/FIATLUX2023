@@ -1,5 +1,5 @@
 """ généré par chatGPT ave la requête : "comment in line the following code"
-chatGPT a aussi donné les indications pour traiter la mise en secret de  l'api_key
+
 The code is a simple web application built using Streamlit library. The application uses SpeckleClient from specklepy library to interact with the Speckle API. The main purpose of the application is to allow the user to select a Speckle stream from a dropdown and view the latest commit of the selected stream. The following is a line-by-line description of the code:
 
 Import libraries: Streamlit, specklepy, pandas, and plotly express libraries are imported.
@@ -35,9 +35,8 @@ from specklepy.api.credentials import get_account_from_token
 import pandas as pd
 #import plotly express
 import plotly.express as px
-import os
 
-api_key = os.environ.get('API_KEY')
+
 
 #--------------------------
 
@@ -84,8 +83,14 @@ with input:
 	#User Input boxes
     speckleServer = serverCol.text_input("Server URL", "speckle.xyz", help="Speckle server to connect.")
     #speckleToken = tokenCol.text_input("Speckle token", "bb79167d4c8279ffcdac840cf0593191b54504f359", help="If you don't know how to get your token, take a look at this [link](<https://speckle.guide/dev/tokens.html>)👈")
-    speckleToken = tokenCol.text_input("Speckle token", api_key , help="If you don't know how to get your token, take a look at this [link](<https://speckle.guide/dev/tokens.html>)👈")
+    #speckleToken = tokenCol.text_input("Speckle token", api_key , help="If you don't know how to get your token, take a look at this [link](<https://speckle.guide/dev/tokens.html>)👈")
+    
+    with open('api_key.txt', 'r') as f:
+        api_key = f.read().strip()
+    
+    st.write(api_key)
     #speckleToken = tokenCol.text_input("Speckle token", "7fdf1d8ab29501f17d41d8bb8cd833c188d75eaca7", help="If you don't know how to get your token, take a look at this [link](<https://speckle.guide/dev/tokens.html>)👈")
+    speckleToken = tokenCol.text_input("Speckle token", api_key, help="If you don't know how to get your token, take a look at this [link](<https://speckle.guide/dev/tokens.html>)👈")
     #-------
 
 	#-------
