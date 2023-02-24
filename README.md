@@ -1,11 +1,11 @@
 # FIATLUX2023
 FIATLUX est un projet d'optimisation "end to end" basé sur l'association de plusieurs avancées technologiques, dont:
-- Le déploiement possible sur internet via des microservices susceptible d'inclure des objets 3D complexes.
+- Le déploiement possible sur internet via des microservices susceptibles d'inclure des objets 3D complexes.
 - Un assistant virtuel venant aide aux utilisateurs de FIATLUX.
 - L'adaptation des techniques de "ray tracing" au calcul scientifique avec l'algorithme de la marche de sphères.
 - Son adaptation aux cartes GPU de nouvelle génération (réalisant **210 000 milliards d'opérations par seconde !** pour le ray tracing).
 - L'intégration des capacités symboliques-numériques de Julia a un modèle de simulation traditionnel disposant d'une très large bibliothèque.
-- Le remplacement de modèles complexes par leurs équivalents plus rapides (jumeaux numériques). 
+- Le remplacement de modèles complexes par leurs équivalents plus rapides (modèles réduits). 
 
 1- **Microservices:** 
 
@@ -19,6 +19,10 @@ Nous intègrerons des outils permettant de créer de tels microservices à parti
 Le déploiement sur le Net est facilité grâce à [Streamlit](https://streamlit.io/)
 
 *Nous avons d'ores et déjà réalisé un [maquettage](https://fiatluxweb.herokuapp.com/) utilisant ces ressources, que nous avons déployées sur le net.*
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jpbrasile/FIATLUX2023/main/ArchitectureFIATLUX.PNG" alt="schéma FIATLUX">
+</p>
+
 
 2- **Assistant virtuel:**
 
@@ -30,13 +34,13 @@ Les assistants virtuels sont aussi précieux pour l'aide qu'ils peuvent apporter
 Nous intégrerons les percées récentes de cet algorithme stockastique pour modéliser une très large gamme de problèmes physiques.
 Sans nécessiter de maillage préalable et fournissant facilement l'information de gradient, il est particulièrement bien adapté à l'optimisation de géométries complexes représentées sous forme paramétrique. A titre de comparaison une pièce complexe nécessitant 14 heures de maillage peut être traitée en moins d'une minute avec l'algorithme de la marche des sphères (accélération d'un rapport 5000 !
 
-Nous intégreons ainsi Grasshopper, le logiciel paramétrique des architectes, car c'est l'outil idéal pour produire de telles géométries même dans les cas les plus complexes. 
+Nous intégrerons aussi Grasshopper, le logiciel paramétrique des architectes, car c'est l'outil idéal pour produire de telles géométries même dans les cas les plus complexes. 
 
 Pour plus de détail sur l'algorithme, son domaine d'application et ses avantages par rapport aux méthodes éléments finis, je vous invite à visionner l'[excellente présentation](https://cs.dartmouth.edu/wjarosz/publications/sawhneyseyb22gridfree.html) de Keenan Crane.
 
 4- **[Cartes GPU de nouvelle génération](https://wccftech.com/nvidia-rtx-6000-ada-graphics-card-benchmarked-3dmark-72-percent-faster-vs-a6000-ampere/ ):**
 
-Fin 2018 une carte GPU de 10 000 $ exécutait 10 milliards d'opérations de ray tracing par seconde, aujourd'hui une carte coûtant 35% moins cher est 21 000 fois plus rapide faisant passer un calcul de 6 heures à une seconde! Nous utiliserons ce type de carte pour réaliser nos calculs scientifiques, car tous nos microservices sont compatibles d'un portage sur GPU . 
+Fin 2018 une carte GPU de 10 000 $ exécutait 10 milliards d'opérations de ray tracing par seconde, aujourd'hui une carte coûtant 35% moins cher est 21 000 fois plus rapide **faisant passer un calcul de 6 heures à une seconde!** Nous utiliserons ce type de carte pour réaliser nos calculs scientifiques, car tous nos microservices sont compatibles d'un portage sur GPU . 
 
 5- **Modélisation end to end:**
 
@@ -44,18 +48,24 @@ Le package [ModelingToolKit.jl](https://github.com/SciML/ModelingToolkit.jl) de 
 
 Il permet aussi le traitement de milliers d'équations différentielles fournies "en vrac" pour les ordonner, supprimer les redondances et ne conserver que celles utiles à la résolution du problème principal.
 
-Une [thèse](https://ecp.ep.liu.se/index.php/modelica/article/view/186) est en cours pour intégrer ce backend, avec toutes les performances qui en découlent, à OpenModelica, un outil de modélisation acausal déjà mature et disposant d'une très large bibliothèque. [Un gain de 7](https://global.discourse-cdn.com/business5/uploads/julialang/original/3X/8/2/826e8936737aad3a6f105d3cd194e80f27816599.png) en performance a été obtenu. Mais ce nouvel outil sera également compatible de l'emploi de jumeaux numériques, tels que ceux décrits ci-après, pour accélérer encore les performances.
+Une [thèse](https://ecp.ep.liu.se/index.php/modelica/article/view/186) est en cours pour intégrer ce backend, avec toutes les performances qui en découlent, à OpenModelica, un outil de modélisation acausal déjà mature et disposant d'une très large bibliothèque. [Un gain de 7](https://global.discourse-cdn.com/business5/uploads/julialang/original/3X/8/2/826e8936737aad3a6f105d3cd194e80f27816599.png) en performance a été obtenu. Mais ce nouvel outil sera également compatible de l'emploi de modèles réduits, tels que ceux décrits ci-après, pour accélérer encore les performances.
 
-6- **Jumeaux numériques**
-L’emploi de jumeaux numériques différentiables permet 
+6- **Modèles réduits**
+L’emploi de modèles réduits différentiables permet 
 - d’accélérer la mise en œuvre d’un modèle bien plus rapidement ([JuliaSim](https://juliahub.com/products/juliasim/ ) indique ainsi une accélération de 80) 
 - d’opérer son optimisation grâce à la connaissance du gradient. 
 
 Plusieurs pistes très prometteuses seront explorées et donneront lieu à la création de microservices FIATLUX :
 
--	Dans les cas simples le jumeau numérique peut être réalisé à partir de [surrogates.jl](https://github.com/SciML/Surrogates.jl)  et [SimpleChain.jl](https://github.com/PumasAI/SimpleChains.jl). La phase d’optimisation utilise alors ce modèle au lieu du modèle initial bien plus lourd dans sa mise en œuvre. 
+-	Dans les cas simples, le mooèle réduit peut être réalisé à partir de [surrogates.jl](https://github.com/SciML/Surrogates.jl)  et [SimpleChain.jl](https://github.com/PumasAI/SimpleChains.jl). La phase d’optimisation utilise alors ce modèle au lieu du modèle initial bien plus lourd dans sa mise en œuvre. 
 -	Les [DEQ](https://julialang.org/blog/2021/10/DEQ/ )   : Réseau de neurones avec une couche implicite qui remplace un nombre infini de couches d’un réseau de neurones traditionnel.
 -	Le [CPINN](https://paperswithcode.com/paper/competitive-physics-informed-networks )) : Il s’agit d’un réseau de neurones inspiré par la physique (les lois physiques sont dans la fonction de coût) mais qui converge bien mieux et bien plus vite grâce à l’emploi d’un GAN.
 -	Le [calcul avec réservoir](https://docs.sciml.ai/ReservoirComputing/dev/ ) : réseau de neurones aux paramètres figés (réservoir), suivi d’une seule couche neuronale paramétrée). Cette architecture est bien adaptée à l’extrapolation des séries temporelles. 
+
+
+
+
+
+
 
 

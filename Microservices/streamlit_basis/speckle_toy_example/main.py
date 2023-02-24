@@ -106,7 +106,9 @@ with input:
     streams = client.stream.list()
     #Get Stream Names
     streamNames = [s.name for s in streams]
-    #Dropdown for stream selection
+    #Dropdown for stream selection with 50 items
+   
+
     sName = st.selectbox(label="Select your stream", options=streamNames, help="Select your stream from the dropdown")
 
 
@@ -204,6 +206,7 @@ with graphs:
 #-------
     #CONNECTOR CHART 🍩
     commits= pd.DataFrame.from_dict([c.dict() for c in commits])
+    st.write(commits)
     #get apps from commits
     apps = commits["sourceApplication"]
     #reset index
