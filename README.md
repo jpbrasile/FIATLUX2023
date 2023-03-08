@@ -36,7 +36,7 @@ Sans nécessiter de maillage préalable et fournissant facilement l'information 
 
 Nous intégrerons aussi Grasshopper, le logiciel paramétrique des architectes, car c'est l'outil idéal pour produire de telles géométries même dans les cas les plus complexes. 
 
-Pour plus de détail sur l'algorithme, son domaine d'application et ses avantages par rapport aux méthodes éléments finis, je vous invite à visionner l'[excellente présentation]([https://www.youtube.com/watch?v=bZbuKOxH71o&t=1297s]) de Keenan Crane.
+Pour plus de détail sur l'algorithme, son domaine d'application et ses avantages par rapport aux méthodes éléments finis, je vous invite à visionner l'[excellente présentation](https://www.youtube.com/watch?v=bZbuKOxH71o&t=1297s) de Keenan Crane.
 
 4- **[Cartes GPU de nouvelle génération](https://wccftech.com/nvidia-rtx-6000-ada-graphics-card-benchmarked-3dmark-72-percent-faster-vs-a6000-ampere/ ):**
 
